@@ -1,4 +1,4 @@
-package com.websathi.connectmeapp;
+package com.websathi.connectmeapp.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.websathi.connectmeapp.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,6 +34,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_draw_open, R.string.navigation_draw_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
     }
 
 
@@ -49,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                break;
+
             case R.id.nav_add_business:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddBusinessFragment()).commit();
                 break;
@@ -77,6 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
-        return false;
+        return true;
     }
 }
