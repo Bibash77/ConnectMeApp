@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
+import com.websathi.connectmeapp.adapter.BusinessCardApater;
 import com.websathi.connectmeapp.model.Business;
 
 import java.util.ArrayList;
@@ -22,8 +23,9 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private BusinessAdapter adapter;
+    private BusinessCardApater adapter;
     private TextView noResultsTextView;
+    BusinessAdapter businessAdapter;
 
     @Nullable
     @Override
@@ -32,13 +34,13 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.business_list);
         noResultsTextView = view.findViewById(R.id.no_results_text_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new BusinessAdapter(getBusinesses());
+        adapter = new BusinessCardApater(getBusinesses());
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-    private List<Business> getBusinesses() {
-        List<Business> businesses = new ArrayList<>();
+    private ArrayList<Business> getBusinesses() {
+        ArrayList<Business> businesses = new ArrayList<>();
         businesses.add(new Business("Business 1", "123 Main St", 1));
         businesses.add(new Business("Business 2", "456 Maple Ave", 2));
         businesses.add(new Business("Business 3", "789 Oak Ln", 3));

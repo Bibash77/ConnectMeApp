@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Define the layout for each individual list item -->
     <LinearLayout
@@ -50,8 +51,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/business_list_item"
         android:padding="8dp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        tools:listitem="@layout/item_business_card"
+         />
 
     <TextView
         android:id="@+id/no_results_text_view"
