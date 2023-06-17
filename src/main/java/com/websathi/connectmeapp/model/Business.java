@@ -1,6 +1,8 @@
 package com.websathi.connectmeapp.model;
 
-public class Business {
+import java.io.Serializable;
+
+public class Business implements Serializable {
     private String name;
     private String address;
     private int photo;
