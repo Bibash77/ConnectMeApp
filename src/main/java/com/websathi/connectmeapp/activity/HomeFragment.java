@@ -85,8 +85,8 @@ public class HomeFragment extends Fragment {
 
         public BusinessViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.name_text_view);
-            addressTextView = itemView.findViewById(R.id.address_text_view);
+            nameTextView = itemView.findViewById(R.id.titleTextView);
+            addressTextView = itemView.findViewById(R.id.descriptionTextView);
         }
     }
 }
