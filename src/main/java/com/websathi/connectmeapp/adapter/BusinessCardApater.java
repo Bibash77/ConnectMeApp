@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.model.Business;
+import com.websathi.connectmeapp.model.business.Business;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
         Business business = businessArrayList.get(position);
         holder.titleTextView.setText(business.getName());
+        holder.locationTextView.setText(business.location.street);
+        holder.descriptionTextView.setText(business.description);
     }
 
 
@@ -40,12 +42,16 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         return businessArrayList.size();
     }
 
-     class CustomViewHolder extends RecyclerView.ViewHolder {
+     public class CustomViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTextView;
+        private TextView descriptionTextView;
+        private TextView locationTextView;
 
         public CustomViewHolder(@NonNull final View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
+            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
+            locationTextView = itemView.findViewById(R.id.locationTextView);
 
         }
     }

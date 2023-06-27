@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.adapter.BusinessCardApater;
-import com.websathi.connectmeapp.model.Business;
+import com.websathi.connectmeapp.model.business.Business;
+import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        // fetch business recycle list view
         recyclerView = view.findViewById(R.id.business_list);
+
         noResultsTextView = view.findViewById(R.id.no_results_text_view);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BusinessCardApater(getBusinesses());
         recyclerView.setAdapter(adapter);
@@ -41,17 +45,17 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<Business> getBusinesses() {
         ArrayList<Business> businesses = new ArrayList<>();
-        businesses.add(new Business("Business 1", "123 Main St", 1));
-        businesses.add(new Business("Business 2", "456 Maple Ave", 2));
-        businesses.add(new Business("Business 3", "789 Oak Ln", 3));
-        businesses.add(new Business("Business 4", "321 Elm St", 4));
-        businesses.add(new Business("Business 5", "654 Pine Rd", 5));
+        Location location = new Location();
+        location.street="Charkhal Rd, Kathmandu 44605";
+        location.coordinates= new double[2];
+        businesses.add(new Business("1", "Leapfrog Technology, Inc.","Software company", location, 5));
+
         return businesses;
     }
 
     private class BusinessAdapter extends RecyclerView.Adapter<BusinessViewHolder> {
 
-        private List<Business> businesses;
+        private final List<Business> businesses;
 
         public BusinessAdapter(List<Business> businesses) {
             this.businesses = businesses;
@@ -68,13 +72,20 @@ public class HomeFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull BusinessViewHolder holder, int position) {
             Business business = businesses.get(position);
-            holder.nameTextView.setText(business.getName());
-            holder.addressTextView.setText(business.getAddress());
+            holder.nameTextView.setText(business.name);
+            holder.addressTextView.setText(business.location.street);
         }
 
         @Override
         public int getItemCount() {
             return businesses.size();
+        }
+
+        @Override
+        public String toString() {
+            return "BusinessAdapter{" +
+                    "businesses=" + businesses +
+                    '}';
         }
     }
 

@@ -1,12 +1,10 @@
 package com.websathi.connectmeapp.activity;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.helper.APIService;
 import com.websathi.connectmeapp.helper.APiHelper;
-import com.websathi.connectmeapp.model.Business;
-import com.websathi.connectmeapp.model.BusinessResponse;
+import com.websathi.connectmeapp.model.business.Business;
+import com.websathi.connectmeapp.model.business.BusinessResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +38,7 @@ public class AddBusinessFragment extends Fragment {
         final String name = this.businessName.getText().toString();
         final String address = this.businessAddress.getText().toString();
         if(!name.isEmpty() && !address.isEmpty()) {
-            Business business = new Business(name, address, 1);
+            Business business = new Business();
             retrofit = APiHelper.getInstance();
             APIService apiService = retrofit.create(APIService.class);
 

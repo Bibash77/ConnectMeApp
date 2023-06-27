@@ -1,7 +1,7 @@
 package com.websathi.connectmeapp.helper;
 
-import com.websathi.connectmeapp.model.Business;
-import com.websathi.connectmeapp.model.BusinessResponse;
+import com.websathi.connectmeapp.model.business.Business;
+import com.websathi.connectmeapp.model.business.BusinessResponse;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface APIService {
 
 
     @GET("business/paginated")
-    Call<List<BusinessResponse>> getAllBusinessPaginated();
+    Call<List<Business>> getAllBusinessPaginated();
 }
