@@ -57,13 +57,23 @@
             android:id="@+id/bookmarkButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="16dp"
             android:background="@android:color/transparent"
             android:text="+ Book mark"
             android:textAllCaps="false"
             android:textColor="@color/yellow" />
+
+        <Button
+            android:id="@+id/delButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/bookmarkButton"
+            android:text="Delete"
+            android:textColor="@color/red"
+            android:background="@android:color/transparent"
+            />
 
     </RelativeLayout>
 

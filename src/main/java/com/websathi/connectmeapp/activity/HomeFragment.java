@@ -2,6 +2,7 @@ package com.websathi.connectmeapp.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,6 +42,23 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BusinessCardApater(getBusinesses());
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                Toast.makeText(getContext(), "clicked item !!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
         return view;
     }
 
@@ -51,7 +69,7 @@ public class HomeFragment extends Fragment {
             Location location = new Location();
             location.street="Charkhal Rd, Kathmandu 44605";
             location.coordinates= new double[2];
-            businesses.add(new Business("1", "Leapfrog Technology, Inc.","Software company", location, 5));
+            businesses.add(new Business(1, "Leapfrog Technology, Inc.","Software company", location, 5));
             j++;
         }
         return businesses;

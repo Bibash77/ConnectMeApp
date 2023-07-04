@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.CustomViewHolder> {
 
@@ -54,6 +56,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private TextView locationTextView;
 
         private Button bookMarkButton;
+        private Button deleteButton;
 
         BusinessDBHelper businessDBHelper;
 
@@ -64,17 +67,34 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             locationTextView = itemView.findViewById(R.id.locationTextView);
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
+            deleteButton = itemView.findViewById(R.id.delButton);
             bookMarkButton.setOnClickListener(view -> {
                 Location location = new Location();
                 location.street="Charkhal Rd, Kathmandu 44605";
                 location.coordinates= new double[2];
                 Context context = itemView.getContext();
-                Business business = new Business("1", "Leapfrog Technology, Inc.","Software company", location, 5);
+                Business business = new Business(new Random().nextInt(), "Leapfrog Technology, Inc.","Software company", location, 5);
 
 
                 long rowId = businessDBHelper.insert(business);
                 Toast.makeText(context, "Item Added to BookMark !!!", Toast.LENGTH_SHORT).show();
             });
+
+            deleteButton.setOnClickListener(view -> {
+
+            });
+
+
+//            .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//
+//                    Toast.makeText(view.getContext(), "clicked ",
+//                            Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
         }
     }
 }
