@@ -45,21 +45,25 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         holder.descriptionTextView.setText(business.description);
 
         holder.bookMarkButton.setOnClickListener(view -> {
+            System.out.println("book mark button clicked");
                 // Use the business object as needed
                 try {
                     long rowId = businessDBHelper.insert(business);
-                    Toast.makeText(view.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
-                } catch (SQLiteConstraintException e) {
+                } catch (Exception e) {
                    // do nothing
-                    System.out.println("Already in db");
+                    Toast.makeText(holder.itemView.getContext(), "Already In Bookmark!!!", Toast.LENGTH_SHORT).show();
                 }
+            Toast.makeText(holder.itemView.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
         });
 
 
 
         holder.deleteButton.setOnClickListener(view -> {
+            System.out.println("delete button clicked");
             businessDBHelper.deleteData(business.id);
-            Toast.makeText(view.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
+            businessArrayList.remove(position);
+            Toast.makeText(holder.itemView.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
+            notifyDataSetChanged();
         });
     }
 

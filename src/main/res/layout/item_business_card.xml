@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.4"
         android:scaleType="centerCrop"
-        android:src="@drawable/businessimage" />
+        android:src="@drawable/noimage" />
 
     <RelativeLayout
         android:layout_width="0dp"
