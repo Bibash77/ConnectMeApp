@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.helper.APIService;
-import com.websathi.connectmeapp.helper.APiHelper;
+import com.websathi.connectmeapp.helper.apicall.APIService;
+import com.websathi.connectmeapp.helper.apicall.APiHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.BusinessResponse;
 

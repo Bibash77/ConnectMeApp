@@ -4,4 +4,8 @@
     <string name="navigation_draw_open">Open Navigation Draw</string>
     <string name="navigation_draw_close">Close Navigation Draw</string>
     <string name="search_hint">Leap</string>
+
+
+    <!--    <string name="map_key">AIzaSyCJKU3rPOXXQ9Trg8vyFxlR5V3YlObHGZQ</string>-->
+    <string name="map_key">AIzaSyDmisMZoQ_RQty6i3ega9XVk584JTPRD2E</string>
 </resources>

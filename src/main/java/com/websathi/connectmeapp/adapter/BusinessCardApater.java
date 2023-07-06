@@ -1,9 +1,12 @@
 package com.websathi.connectmeapp.adapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,11 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
+import com.websathi.connectmeapp.activity.DetailPageActivity;
 import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.CustomViewHolder> {
 
@@ -23,8 +28,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     private BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
-    public BusinessCardApater(final ArrayList<Business> businessArrayList) {
-        this.businessArrayList = businessArrayList;
+    public BusinessCardApater(final List<Business> businessArrayList) {
+        this.businessArrayList = (ArrayList<Business>) businessArrayList;
     }
 
     @NonNull
@@ -82,6 +87,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final TextView locationTextView;
         private final Button bookMarkButton;
         private final Button deleteButton;
+
+        private final ImageView imageView;
         BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
@@ -92,7 +99,12 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             locationTextView = itemView.findViewById(R.id.locationTextView);
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
             deleteButton = itemView.findViewById(R.id.delButton);
-
+            imageView = itemView.findViewById(R.id.businessImage);
+            imageView.setOnClickListener(view1 -> {
+                Activity activity = (Activity) view1.getContext();
+                Intent intent = new Intent(activity, DetailPageActivity.class);
+                activity.startActivity(intent);
+            });
 
 
 //            .setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Image -->
+    <ImageView
+        android:id="@+id/image_detail"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/noimage" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leap Frog pvt ltd,  "
+        android:textSize="28sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:layout_below="@id/image_detail" />
+
+    <!-- Street -->
+    <TextView
+        android:id="@+id/text_street"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Charkhal Road"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_toEndOf="@id/text_title"
+        android:layout_alignBaseline="@id/text_title"
+        android:paddingStart="8dp" />
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="A Proactive Software Company Based on US Client"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/text_title" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Client Location"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/text_description" />
+
+    <fragment
+        android:id="@+id/googleMapFragment"
+        android:layout_below="@+id/locationText"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+</RelativeLayout>
