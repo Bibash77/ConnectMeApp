@@ -12,6 +12,8 @@ import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BusinessDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "busines";
@@ -54,7 +56,16 @@ public class BusinessDBHelper extends SQLiteOpenHelper {
         System.out.println(business.description);
 //        contentValues.put("image", business.photos);
 
-        return sqLiteDatabase.insert(Business_BOOKMARK_TABLE, null, contentValues);
+        long rowId =  sqLiteDatabase.insert(Business_BOOKMARK_TABLE, null, contentValues);
+        sqLiteDatabase.close();
+        return rowId;
+    }
+
+    public int deleteData(Integer id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        int rowId = sqLiteDatabase.delete(Business_BOOKMARK_TABLE, "id=?",  new String[]{String.valueOf(id)});
+        return rowId;
     }
 
 

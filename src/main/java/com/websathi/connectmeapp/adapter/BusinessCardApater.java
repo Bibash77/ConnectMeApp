@@ -1,10 +1,10 @@
 package com.websathi.connectmeapp.adapter;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,17 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.activity.HomeFragment;
 import com.websathi.connectmeapp.helper.BusinessDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.CustomViewHolder> {
 
-    private ArrayList<Business> businessArrayList;
+    private final ArrayList<Business> businessArrayList;
+
+    private BusinessDBHelper businessDBHelper;
 
     public BusinessCardApater(final ArrayList<Business> businessArrayList) {
         this.businessArrayList = businessArrayList;
@@ -39,9 +39,28 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
         Business business = businessArrayList.get(position);
+        businessDBHelper = new BusinessDBHelper(holder.itemView.getContext());
         holder.titleTextView.setText(business.getName());
         holder.locationTextView.setText(business.location.street);
         holder.descriptionTextView.setText(business.description);
+
+        holder.bookMarkButton.setOnClickListener(view -> {
+                // Use the business object as needed
+                try {
+                    long rowId = businessDBHelper.insert(business);
+                    Toast.makeText(view.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
+                } catch (SQLiteConstraintException e) {
+                   // do nothing
+                    System.out.println("Already in db");
+                }
+        });
+
+
+
+        holder.deleteButton.setOnClickListener(view -> {
+            businessDBHelper.deleteData(business.id);
+            Toast.makeText(view.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
+        });
     }
 
 
@@ -50,14 +69,12 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         return businessArrayList.size();
     }
 
-     public static class CustomViewHolder extends RecyclerView.ViewHolder {
-        private TextView titleTextView;
-        private TextView descriptionTextView;
-        private TextView locationTextView;
-
-        private Button bookMarkButton;
-        private Button deleteButton;
-
+    public static class CustomViewHolder extends RecyclerView.ViewHolder {
+        private final TextView titleTextView;
+        private final TextView descriptionTextView;
+        private final TextView locationTextView;
+        private final Button bookMarkButton;
+        private final Button deleteButton;
         BusinessDBHelper businessDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
@@ -68,21 +85,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             locationTextView = itemView.findViewById(R.id.locationTextView);
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
             deleteButton = itemView.findViewById(R.id.delButton);
-            bookMarkButton.setOnClickListener(view -> {
-                Location location = new Location();
-                location.street="Charkhal Rd, Kathmandu 44605";
-                location.coordinates= new double[2];
-                Context context = itemView.getContext();
-                Business business = new Business(new Random().nextInt(), "Leapfrog Technology, Inc.","Software company", location, 5);
 
-
-                long rowId = businessDBHelper.insert(business);
-                Toast.makeText(context, "Item Added to BookMark !!!", Toast.LENGTH_SHORT).show();
-            });
-
-            deleteButton.setOnClickListener(view -> {
-
-            });
 
 
 //            .setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,5 +99,30 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 //                }
 //            });
         }
+
+        public static <T> T getTFromView(Class<T> targetType, View view, int id) {
+            CharSequence text = ((TextView) view.findViewById(id)).getText();
+            if (targetType == Integer.class) {
+                return targetType.cast(Integer.valueOf(text.toString()));
+            } else if (targetType == String.class) {
+                return targetType.cast(text.toString());
+            } else {
+                // Add other type conversions here as needed
+                throw new IllegalArgumentException("Unsupported target type: " + targetType.getName());
+            }
+        }
+
+        private Business getDataFromView(View view) {
+            Integer id = getTFromView(Integer.class, view, R.id.businessCardId);
+            String street = getTFromView(String.class, view, R.id.locationTextView);
+            String description = getTFromView(String.class, view, R.id.descriptionTextView);
+            String title = getTFromView(String.class, view, R.id.titleTextView);
+
+            Location location = new Location();
+            location.street = street;
+//            location.coordinates= new double[2];
+            return new Business(id, title, description, location, 5);
+        }
+
     }
 }
