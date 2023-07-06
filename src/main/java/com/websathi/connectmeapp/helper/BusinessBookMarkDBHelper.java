@@ -12,10 +12,8 @@ import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class BusinessDBHelper extends SQLiteOpenHelper {
+public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "busines";
 
     private static final int DATABASE_VERSION = 1;
@@ -29,7 +27,7 @@ public class BusinessDBHelper extends SQLiteOpenHelper {
 
 
 
-    public BusinessDBHelper(@Nullable Context context) {
+    public BusinessBookMarkDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

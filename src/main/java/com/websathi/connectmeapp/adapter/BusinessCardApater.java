@@ -1,7 +1,5 @@
 package com.websathi.connectmeapp.adapter;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.helper.BusinessDBHelper;
+import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
 
@@ -23,7 +21,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     private final ArrayList<Business> businessArrayList;
 
-    private BusinessDBHelper businessDBHelper;
+    private BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
     public BusinessCardApater(final ArrayList<Business> businessArrayList) {
         this.businessArrayList = businessArrayList;
@@ -39,7 +37,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
         Business business = businessArrayList.get(position);
-        businessDBHelper = new BusinessDBHelper(holder.itemView.getContext());
+        businessBookMarkDBHelper = new BusinessBookMarkDBHelper(holder.itemView.getContext());
         holder.titleTextView.setText(business.getName());
         holder.locationTextView.setText(business.location.street);
         holder.descriptionTextView.setText(business.description);
@@ -48,19 +46,24 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             System.out.println("book mark button clicked");
                 // Use the business object as needed
                 try {
-                    long rowId = businessDBHelper.insert(business);
-                } catch (Exception e) {
+                    long rowId = businessBookMarkDBHelper.insert(business);
+                    if(rowId != -1) {
+                        Toast.makeText(holder.itemView.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(holder.itemView.getContext(), "Already In Bookmark!!!", Toast.LENGTH_SHORT).show();
+                    }
+                    System.out.println(rowId);
+                } catch (RuntimeException e) {
+                    System.out.println("issue occured");
                    // do nothing
-                    Toast.makeText(holder.itemView.getContext(), "Already In Bookmark!!!", Toast.LENGTH_SHORT).show();
                 }
-            Toast.makeText(holder.itemView.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
         });
 
 
 
         holder.deleteButton.setOnClickListener(view -> {
             System.out.println("delete button clicked");
-            businessDBHelper.deleteData(business.id);
+            businessBookMarkDBHelper.deleteData(business.id);
             businessArrayList.remove(position);
             Toast.makeText(holder.itemView.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
@@ -79,11 +82,11 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final TextView locationTextView;
         private final Button bookMarkButton;
         private final Button deleteButton;
-        BusinessDBHelper businessDBHelper;
+        BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
             super(itemView);
-            businessDBHelper = new BusinessDBHelper(itemView.getContext());
+            businessBookMarkDBHelper = new BusinessBookMarkDBHelper(itemView.getContext());
             titleTextView = itemView.findViewById(R.id.titleTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             locationTextView = itemView.findViewById(R.id.locationTextView);
