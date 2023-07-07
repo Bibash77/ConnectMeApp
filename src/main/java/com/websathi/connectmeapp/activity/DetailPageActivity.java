@@ -1,9 +1,11 @@
 package com.websathi.connectmeapp.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +25,8 @@ public class DetailPageActivity extends AppCompatActivity implements OnMapReadyC
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.googleMapFragment);
+        ActionBar actionBar =   getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         mapFragment.getMapAsync(this);
     }
 
@@ -34,5 +38,16 @@ public class DetailPageActivity extends AppCompatActivity implements OnMapReadyC
                 .title("Your Location"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f));
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                this.finish();
+//                return true;
+//        }
+        this.finish();
+        return true;
     }
 }
