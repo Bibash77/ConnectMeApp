@@ -6,12 +6,17 @@
     <item android:id="@+id/setting"
         android:title="Setting"
         android:tooltipText="setting"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/filtericon"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/logout"
+        android:title="Logout"
+        android:tooltipText="Logout"
+        android:icon="@drawable/filtericon"
         app:showAsAction="never"/>
 
     <item android:id="@+id/about"
-        android:title="Setting"
-        android:icon="@drawable/ic_launcher_background"
+        android:title="Filter"
         app:showAsAction="always"/>
 
 </menu>
