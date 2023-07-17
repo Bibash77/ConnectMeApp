@@ -1,5 +1,6 @@
 package com.websathi.connectmeapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -7,7 +8,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddBusinessFragment()).commit();
                 break;
 
-            case R.id.nav_search_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchSettingFragment()).commit();
-
-                break;
+//            case R.id.nav_search_settings:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchSettingFragment()).commit();
+//
+//                break;
 
             case R.id.nav_bookmark:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookmarkFragment()).commit();
@@ -100,5 +100,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.about:
+                Intent intent = new Intent(this, SearchSettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.setting:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -17,10 +17,10 @@
             android:id="@+id/nav_add_business"
             android:icon="@drawable/ic_add_business"
             android:title="Add your business" />
-        <item
-            android:id="@+id/nav_search_settings"
-            android:icon="@drawable/ic_setting"
-            android:title="Search Settings" />
+<!--        <item-->
+<!--            android:id="@+id/nav_search_settings"-->
+<!--            android:icon="@drawable/ic_setting"-->
+<!--            android:title="Search Settings" />-->
         <item
             android:id="@+id/nav_account_setting"
             android:icon="@drawable/ic_account_setting"

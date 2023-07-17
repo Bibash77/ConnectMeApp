@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
@@ -40,52 +41,69 @@ public class HomeFragment extends Fragment {
 
     private APIService apiService;
 
+// ...
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        // fetch business recycle list view
         recyclerView = view.findViewById(R.id.business_list);
-
         noResultsTextView = view.findViewById(R.id.no_results_text_view);
         apiService = APiHelper.getInstance().create(APIService.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new BusinessCardApater(getBusinesses(new SearchDto()));
-        recyclerView.setAdapter(adapter);
-//        recyclerView.findViewById(R.id.delButton).setVisibility(4);
+        // Call getBusinesses() asynchronously
+        getBusinesses(new SearchDto());
+
         return view;
     }
 
-    private ArrayList<Business> getBusinesses() {
-        ArrayList<Business> businesses = new ArrayList<>();
-            Location location = new Location();
-            location.street = "Data Not Found";
-            location.coordinates = new double[2];
-            businesses.add(new Business(1, "Default Data Inc.", "Default Data", location, 5));
-        return businesses;
-    }
-
-    private List<Business> getBusinesses(final SearchDto searchDto) {
+    private void getBusinesses(final SearchDto searchDto) {
         final Call<List<Business>> call = apiService.getAllBusinessPaginated(searchDto);
-        try {
-            final Response<List<Business>> response = call.execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            } else {
-                // Handle the error response here
-                Toast.makeText(this.getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_SHORT).show();
-            }
-        } catch (final Exception e) {
-            Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
-            System.out.println("unable to connect to internet");
-            System.out.println(e.getCause());;
-            return getBusinesses();
-            // Handle the exception here
-        }
+       try {
+           call.enqueue(new Callback<List<Business>>() {
+               @Override
+               public void onResponse(Call<List<Business>> call, Response<List<Business>> response) {
+                   if (response.isSuccessful()) {
+                       List<Business> businesses = response.body();
+                       if (businesses != null && !businesses.isEmpty()) {
+                           adapter = new BusinessCardApater(businesses);
+                           recyclerView.setAdapter(adapter);
+                       } else {
+                           // Return a default list if the server doesn't provide any data
+                           adapter = new BusinessCardApater(getDefaultBusinessList());
+                           recyclerView.setAdapter(adapter);
+                       }
+                   } else {
+                       // Handle the error response here
+                       Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_SHORT).show();
+                   }
+               }
 
-        return new ArrayList<>();
+               @Override
+               public void onFailure(Call<List<Business>> call, Throwable t) {
+                   Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
+                   System.out.println("Unable to connect to the internet");
+                   t.printStackTrace();
+                   // Return a default list in case of failure
+                   adapter = new BusinessCardApater(getDefaultBusinessList());
+                   recyclerView.setAdapter(adapter);
+               }
+           });
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
     }
+
+// ...
+
+    private static List<Business> getDefaultBusinessList() {
+        // Return your default list of businesses here
+        List<Business> defaultBusinesses = new ArrayList<>();
+        // Add your default business data to the list
+        return defaultBusinesses;
+    }
+
 
 //    private class BusinessAdapter extends RecyclerView.Adapter<BusinessViewHolder> {
 //
