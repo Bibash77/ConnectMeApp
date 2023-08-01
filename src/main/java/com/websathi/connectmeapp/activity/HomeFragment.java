@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment {
                @Override
                public void onResponse(Call<List<Business>> call, Response<List<Business>> response) {
                    if (response.isSuccessful()) {
+
                        List<Business> businesses = response.body();
                        if (businesses != null && !businesses.isEmpty()) {
                            adapter = new BusinessCardApater(businesses);
@@ -82,7 +83,7 @@ public class HomeFragment extends Fragment {
 
                @Override
                public void onFailure(Call<List<Business>> call, Throwable t) {
-                   Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
+//                   Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
                    System.out.println("Unable to connect to the internet");
                    t.printStackTrace();
                    // Return a default list in case of failure
