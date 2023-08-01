@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#D01554</color>
     <!-- Primary Colors -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -19,7 +20,7 @@
     <color name="colorWarning">#FFA000</color>
     <color name="colorWarningLight">#FFE082</color>
     <color name="colorWarningDark">#FF6F00</color>
-
+    <color name="yellow">#B1A009</color>
     <!-- Text Colors -->
     <color name="colorText">#212121</color>
     <color name="colorTextSecondary">#757575</color>
