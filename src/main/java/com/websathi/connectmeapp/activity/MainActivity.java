@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.about:
                 Intent intent = new Intent(this, SearchSettingActivity.class);
+//                intent.putExtra("testData", 1)
                 startActivity(intent);
                 break;
             case R.id.setting:
