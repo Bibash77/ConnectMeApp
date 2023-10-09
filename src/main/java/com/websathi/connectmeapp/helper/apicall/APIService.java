@@ -2,6 +2,7 @@ package com.websathi.connectmeapp.helper.apicall;
 
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.BusinessResponse;
+import com.websathi.connectmeapp.model.business.PaginatedResponse;
 import com.websathi.connectmeapp.model.business.search.SearchDto;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface APIService {
 
 
     @POST("business/paginated")
-    Call<List<Business>> getAllBusinessPaginated(@Body SearchDto searchDto);
+    Call<PaginatedResponse> getAllBusinessPaginated(@Body SearchDto searchDto);
 }

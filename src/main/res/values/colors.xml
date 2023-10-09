@@ -24,5 +24,6 @@
     <!-- Text Colors -->
     <color name="colorText">#212121</color>
     <color name="colorTextSecondary">#757575</color>
-
+    <color name="lightGrey">#757575</color>
+    <color name="duskYellow">#FFA000</color>
 </resources>

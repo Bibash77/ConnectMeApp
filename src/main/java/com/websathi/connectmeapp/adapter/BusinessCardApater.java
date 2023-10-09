@@ -17,7 +17,6 @@ import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.activity.DetailPageActivity;
 import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
-import com.websathi.connectmeapp.model.business.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +43,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         Business business = businessArrayList.get(position);
         businessBookMarkDBHelper = new BusinessBookMarkDBHelper(holder.itemView.getContext());
         holder.titleTextView.setText(business.getName());
-        holder.locationTextView.setText(business.location.street);
-        holder.descriptionTextView.setText(business.description);
+        holder.locationTextView.setText(business.location.formattedAddress);
+        holder.category.setText(business.category);
 
         holder.bookMarkButton.setOnClickListener(view -> {
             System.out.println("book mark button clicked");
@@ -83,7 +82,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleTextView;
-        private final TextView descriptionTextView;
+        private final TextView category;
         private final TextView locationTextView;
         private final Button bookMarkButton;
         private final Button deleteButton;
@@ -95,7 +94,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             super(itemView);
             businessBookMarkDBHelper = new BusinessBookMarkDBHelper(itemView.getContext());
             titleTextView = itemView.findViewById(R.id.titleTextView);
-            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
+            category = itemView.findViewById(R.id.category);
             locationTextView = itemView.findViewById(R.id.locationTextView);
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
             deleteButton = itemView.findViewById(R.id.delButton);
@@ -131,17 +130,17 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             }
         }
 
-        private Business getDataFromView(View view) {
-            Integer id = getTFromView(Integer.class, view, R.id.businessCardId);
-            String street = getTFromView(String.class, view, R.id.locationTextView);
-            String description = getTFromView(String.class, view, R.id.descriptionTextView);
-            String title = getTFromView(String.class, view, R.id.titleTextView);
-
-            Location location = new Location();
-            location.street = street;
-//            location.coordinates= new double[2];
-            return new Business(id, title, description, location, 5);
-        }
+//        private Business getDataFromView(View view) {
+//            String id = getTFromView(String.class, view, R.id.businessCardId);
+//            String street = getTFromView(String.class, view, R.id.locationTextView);
+//            String category = getTFromView(String.class, view, R.id.category);
+//            String title = getTFromView(String.class, view, R.id.titleTextView);
+//
+//            Location location = new Location();
+//            location.street = street;
+////            location.coordinates= new double[2];
+//            return new Business(id, title, description, location, 5);
+//        }
 
     }
 }

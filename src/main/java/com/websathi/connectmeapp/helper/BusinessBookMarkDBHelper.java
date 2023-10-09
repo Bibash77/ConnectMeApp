@@ -22,8 +22,8 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS business_bookmark";
 
-    private static final String BUSINESS_TABLE_QUERY = "CREATE TABLE business_bookmark( id INTEGER PRIMARY KEY AUTOINCREMENT , " +
-            "name VARCHAR, street VARCHAR, description VARCHAR, image varchar)";
+    private static final String BUSINESS_TABLE_QUERY = "CREATE TABLE business_bookmark( id VARCHAR PRIMARY KEY  , " +
+            "name VARCHAR, formattedAddress VARCHAR, description VARCHAR, image varchar)";
 
 
 
@@ -47,9 +47,8 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("id", business.id);
         contentValues.put("name", business.name);
-        contentValues.put("street", business.location.street);
+        contentValues.put("formattedAddress", business.location.formattedAddress);
         contentValues.put("description", business.description);
         System.out.println(business.description);
 //        contentValues.put("image", business.photos);
@@ -59,7 +58,7 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
         return rowId;
     }
 
-    public int deleteData(Integer id) {
+    public int deleteData(String id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         int rowId = sqLiteDatabase.delete(Business_BOOKMARK_TABLE, "id=?",  new String[]{String.valueOf(id)});
@@ -76,9 +75,9 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 Business business = new Business();
                 business.location = new Location();
-                business.id = cursor.getInt(0);
+                business.id = cursor.getString(0);
                 business.name = cursor.getString(1);
-                business.location.street  = cursor.getString(2);
+                business.location.formattedAddress = cursor.getString(2);
                 business.description = cursor.getString(3);
 
 

@@ -33,21 +33,7 @@ public class BookmarkFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new BusinessCardApater(businessBookMarkDBHelper.getAllBookMarkedItems());
         recyclerView.setAdapter(adapter);
-
         return view;
-    }
-
-    private ArrayList<Business> getBusinesses() {
-        ArrayList<Business> businesses = new ArrayList<>();
-        int j = 0;
-        while(j < 100) {
-            Location location = new Location();
-            location.street="Charkhal Rd, Kathmandu 44605";
-            location.coordinates= new double[2];
-            businesses.add(new Business(1, "Leapfrog Technology, Inc.","Software company", location, 5));
-            j++;
-        }
-        return businesses;
     }
 
 }

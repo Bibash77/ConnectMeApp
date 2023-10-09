@@ -21,11 +21,13 @@ import com.websathi.connectmeapp.helper.apicall.APIService;
 import com.websathi.connectmeapp.helper.apicall.APiHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.Location;
+import com.websathi.connectmeapp.model.business.PaginatedResponse;
 import com.websathi.connectmeapp.model.business.search.SearchDto;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,20 +55,25 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Call getBusinesses() asynchronously
-        getBusinesses(new SearchDto());
+
+        SearchDto searchDto = new SearchDto();
+        searchDto.setLimit(100);
+        searchDto.setPage(1);
+        getBusinesses(searchDto);
 
         return view;
     }
 
     private void getBusinesses(final SearchDto searchDto) {
-        final Call<List<Business>> call = apiService.getAllBusinessPaginated(searchDto);
+        final Call<PaginatedResponse> call = apiService.getAllBusinessPaginated(searchDto);
        try {
-           call.enqueue(new Callback<List<Business>>() {
+           call.enqueue(new Callback<PaginatedResponse>() {
                @Override
-               public void onResponse(Call<List<Business>> call, Response<List<Business>> response) {
+               public void onResponse(Call<PaginatedResponse> call, Response<PaginatedResponse> response) {
                    if (response.isSuccessful()) {
+                       PaginatedResponse paginatedResponse = response.body();
 
-                       List<Business> businesses = response.body();
+                       List<Business> businesses = paginatedResponse.getResults();
                        if (businesses != null && !businesses.isEmpty()) {
                            adapter = new BusinessCardApater(businesses);
                            recyclerView.setAdapter(adapter);
@@ -82,7 +89,7 @@ public class HomeFragment extends Fragment {
                }
 
                @Override
-               public void onFailure(Call<List<Business>> call, Throwable t) {
+               public void onFailure(Call<PaginatedResponse> call, Throwable t) {
 //                   Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
                    System.out.println("Unable to connect to the internet");
                    t.printStackTrace();
