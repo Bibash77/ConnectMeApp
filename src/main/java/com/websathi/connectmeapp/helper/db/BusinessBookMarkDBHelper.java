@@ -1,4 +1,4 @@
-package com.websathi.connectmeapp.helper;
+package com.websathi.connectmeapp.helper.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -43,10 +43,11 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
     }
 
     public long insert(Business business) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put("id", business.id);
         contentValues.put("name", business.name);
         contentValues.put("formattedAddress", business.location.formattedAddress);
         contentValues.put("description", business.description);
@@ -71,7 +72,7 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Business_BOOKMARK_TABLE, null);
         ArrayList<Business> businesses = new ArrayList<>();
-        if (cursor.moveToFirst()) {
+
             while (cursor.moveToNext()) {
                 Business business = new Business();
                 business.location = new Location();
@@ -84,8 +85,6 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
 
                 businesses.add(business);
             }
-
-        }
         cursor.close();
         return businesses;
     }

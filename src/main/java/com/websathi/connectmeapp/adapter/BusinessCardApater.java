@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.activity.DetailPageActivity;
-import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
+import com.websathi.connectmeapp.helper.db.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
+import com.websathi.connectmeapp.model.business.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.CustomViewHolder> {
 
@@ -45,6 +47,14 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         holder.titleTextView.setText(business.getName());
         holder.locationTextView.setText(business.location.formattedAddress);
         holder.category.setText(business.category);
+        List<Service> servicesResponse = business.services;
+        String serviceTotal = "N/A";
+        if(servicesResponse != null) {
+         serviceTotal =  servicesResponse.stream()
+                    .map(service -> service.getName())
+                    .collect(Collectors.joining(", "));
+            holder.services.setText(serviceTotal);
+        }
 
         holder.bookMarkButton.setOnClickListener(view -> {
             System.out.println("book mark button clicked");
@@ -84,6 +94,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final TextView titleTextView;
         private final TextView category;
         private final TextView locationTextView;
+        private final TextView services;
         private final Button bookMarkButton;
         private final Button deleteButton;
 
@@ -99,6 +110,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
             deleteButton = itemView.findViewById(R.id.delButton);
             imageView = itemView.findViewById(R.id.businessImage);
+            services= itemView.findViewById(R.id.services);
             imageView.setOnClickListener(view1 -> {
                 Activity activity = (Activity) view1.getContext();
                 Intent intent = new Intent(activity, DetailPageActivity.class);

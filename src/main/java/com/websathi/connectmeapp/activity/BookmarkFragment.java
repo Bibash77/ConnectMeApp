@@ -13,11 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.adapter.BusinessCardApater;
-import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
-import com.websathi.connectmeapp.model.business.Business;
-import com.websathi.connectmeapp.model.business.Location;
-
-import java.util.ArrayList;
+import com.websathi.connectmeapp.helper.db.BusinessBookMarkDBHelper;
 
 public class BookmarkFragment extends Fragment {
     private BusinessCardApater adapter;
