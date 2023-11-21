@@ -2,6 +2,7 @@ package com.websathi.connectmeapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
@@ -57,7 +60,7 @@ public class HomeFragment extends Fragment {
         // Call getBusinesses() asynchronously
 
         SearchDto searchDto = new SearchDto();
-        searchDto.setLimit(100);
+        searchDto.setLimit(20);
         searchDto.setPage(1);
         getBusinesses(searchDto);
 
@@ -77,6 +80,7 @@ public class HomeFragment extends Fragment {
                        if (businesses != null && !businesses.isEmpty()) {
                            adapter = new BusinessCardApater(businesses);
                            recyclerView.setAdapter(adapter);
+                           System.out.println(businesses);
                        } else {
                            // Return a default list if the server doesn't provide any data
                            adapter = new BusinessCardApater(getDefaultBusinessList());
@@ -91,11 +95,27 @@ public class HomeFragment extends Fragment {
                @Override
                public void onFailure(Call<PaginatedResponse> call, Throwable t) {
 //                   Toast.makeText(getContext(), "Unable to Retrieve Data From Server", Toast.LENGTH_LONG).show();
-                   System.out.println("Unable to connect to the internet");
+//                   System.out.println("fail to get data");
+//                   t.printStackTrace();
+//                   // Return a default list in case of failure
+//                   adapter = new BusinessCardApater(getDefaultBusinessList());
+//                   recyclerView.setAdapter(adapter);
+
+                   Log.e("NetworkError", "Error during network request: " + t.getMessage());
+
+                   // Log raw response body
+                   if (call != null && call.isExecuted() && call.isCanceled()) {
+                       ResponseBody errorBody = ((HttpException) t).response().errorBody();
+                       if (errorBody != null) {
+                           try {
+                               Log.e("RawResponse", "Raw response body: " + errorBody.string());
+                           } catch (IOException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                   }
+
                    t.printStackTrace();
-                   // Return a default list in case of failure
-                   adapter = new BusinessCardApater(getDefaultBusinessList());
-                   recyclerView.setAdapter(adapter);
                }
            });
        } catch (Exception e) {

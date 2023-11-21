@@ -34,7 +34,7 @@
         android:layout_marginEnd="16dp"
         android:textColor="@color/red"
         android:textSize="18sp"
-        android:text="500 km"
+        android:text="500 KM"
         android:layout_alignParentEnd="true" />
 
     <!-- Rating Setting -->
@@ -67,21 +67,53 @@
         android:layout_marginEnd="16dp"
         android:textColor="@color/red"
         android:textSize="18sp"
-        android:text="3"
+        android:text="3 Star"
         android:layout_alignParentEnd="true" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/categoryOptions"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="18sp"-->
+<!--        android:hint="Select Categories"-->
+<!--        android:drawablePadding="16dp"-->
+<!--        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"-->
+<!--        android:background="edit"-->
+
+<!--        />-->
+
+    <TextView
+        android:id="@+id/categoryOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:background="@android:drawable/editbox_background"
+        android:drawableRight="@drawable/baseline_keyboard_arrow_down_24"
+        android:drawablePadding="16dp"
+        android:layout_below="@id/text_rating_value"
+        android:text="Select Categories"
+        android:padding="12dp" />
 
     <TextView
         android:id="@+id/locationTextData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_rating_value"
-        android:layout_marginTop="8dp"
+        android:layout_below="@id/categoryOptions"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="Choose the location" />
+        android:text="Your location" />
 
-    <fragment
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/googleMapFragment"
         android:layout_below="@id/locationTextData"
         android:layout_width="wrap_content"

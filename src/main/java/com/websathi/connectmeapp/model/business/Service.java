@@ -12,5 +12,5 @@ import lombok.Setter;
 public class Service {
     public String _id;
     public String name;
-    public int charges;
+    public Double charges;
 }

@@ -13,8 +13,8 @@ import lombok.Setter;
 @Setter
 public class SearchDto {
     private SearchField searchField;
-    private int page;
-    private int limit;
+    private Integer page;
+    private Integer limit;
 
     // Constructors, getters, and setters
     @Data
