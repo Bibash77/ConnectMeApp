@@ -93,12 +93,12 @@ public class SearchSettingActivity extends AppCompatActivity implements OnMapRea
         this.selectedLanguage = new boolean[this.categories.length];
 
 
-        this.ratingSeekBar = this.findViewById(R.id.seekbar_rating);
+        ratingSeekBar = findViewById(R.id.seekbar_rating);
         this.ratingValue = this.findViewById(R.id.text_rating_value);
 
-        this.configLocationRadiusSeekBar();
-        this.configRatingSeekBar();
-        this.configureCategoryDropDown();
+        configLocationRadiusSeekBar();
+        configRatingSeekBar();
+        configureCategoryDropDown();
 
 
         final SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
@@ -166,20 +166,20 @@ public class SearchSettingActivity extends AppCompatActivity implements OnMapRea
                 // set dialog non cancelable
                 builder.setCancelable(false);
 
-                builder.setMultiChoiceItems(SearchSettingActivity.this.categories, SearchSettingActivity.this.selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setMultiChoiceItems(categories, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, final int i, final boolean b) {
                         // check condition
                         if (b) {
                             // when checkbox selected
                             // Add position  in lang list
-                            SearchSettingActivity.this.categoriesList.add(i);
+                            categoriesList.add(i);
                             // Sort array list
-                            Collections.sort(SearchSettingActivity.this.categoriesList);
+                            Collections.sort(categoriesList);
                         } else {
                             // when checkbox unselected
                             // Remove position from langList
-                            SearchSettingActivity.this.categoriesList.remove(Integer.valueOf(i));
+                            categoriesList.remove(Integer.valueOf(i));
                         }
                     }
                 });
@@ -190,11 +190,11 @@ public class SearchSettingActivity extends AppCompatActivity implements OnMapRea
                         // Initialize string builder
                         final StringBuilder stringBuilder = new StringBuilder();
                         // use for loop
-                        for (int j = 0; j < SearchSettingActivity.this.categoriesList.size(); j++) {
+                        for (int j = 0; j < categoriesList.size(); j++) {
                             // concat array value
-                            stringBuilder.append(SearchSettingActivity.this.categories[SearchSettingActivity.this.categoriesList.get(j)]);
+                            stringBuilder.append(categories[SearchSettingActivity.this.categoriesList.get(j)]);
                             // check condition
-                            if (j != SearchSettingActivity.this.categoriesList.size() - 1) {
+                            if (j != categoriesList.size() - 1) {
                                 // When j value  not equal
                                 // to lang list size - 1
                                 // add comma
@@ -219,13 +219,13 @@ public class SearchSettingActivity extends AppCompatActivity implements OnMapRea
                     @Override
                     public void onClick(final DialogInterface dialogInterface, final int i) {
                         // use for loop
-                        for (int j = 0; j < SearchSettingActivity.this.selectedLanguage.length; j++) {
+                        for (int j = 0; j < selectedLanguage.length; j++) {
                             // remove all selection
-                            SearchSettingActivity.this.selectedLanguage[j] = false;
+                            selectedLanguage[j] = false;
                             // clear language list
-                            SearchSettingActivity.this.categoriesList.clear();
+                            categoriesList.clear();
                             // clear text view value
-                            SearchSettingActivity.this.categoryOptions.setText("");
+                            categoryOptions.setText("");
                         }
                     }
                 });
