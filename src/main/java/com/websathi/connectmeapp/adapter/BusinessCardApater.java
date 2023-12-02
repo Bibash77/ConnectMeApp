@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.activity.DetailPageActivity;
-import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
+import com.websathi.connectmeapp.helper.db.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
-import com.websathi.connectmeapp.model.business.Location;
+import com.websathi.connectmeapp.model.business.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.CustomViewHolder> {
 
@@ -28,8 +29,14 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     private BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
+    private String viewName;
+
     public BusinessCardApater(final List<Business> businessArrayList) {
         this.businessArrayList = (ArrayList<Business>) businessArrayList;
+    }
+    public BusinessCardApater(final List<Business> businessArrayList, final String viewName) {
+        this.businessArrayList = (ArrayList<Business>) businessArrayList;
+        this.viewName=viewName;
     }
 
     @NonNull
@@ -44,8 +51,17 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         Business business = businessArrayList.get(position);
         businessBookMarkDBHelper = new BusinessBookMarkDBHelper(holder.itemView.getContext());
         holder.titleTextView.setText(business.getName());
-        holder.locationTextView.setText(business.location.street);
-        holder.descriptionTextView.setText(business.description);
+        holder.locationTextView.setText(business.location.formattedAddress);
+        holder.category.setText(business.category);
+        List<Service> servicesResponse = business.services;
+        String serviceTotal = "N/A";
+        if(servicesResponse != null) {
+         serviceTotal =  servicesResponse.stream()
+                    .map(service -> service.getName())
+                    .collect(Collectors.joining(", "));
+            holder.services.setText(serviceTotal);
+        }
+        holder.distance.setText(business.distance + " KM");
 
         holder.bookMarkButton.setOnClickListener(view -> {
             System.out.println("book mark button clicked");
@@ -59,6 +75,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
                     }
                     System.out.println(rowId);
                 } catch (RuntimeException e) {
+                    e.printStackTrace();
                     System.out.println("issue occured");
                    // do nothing
                 }
@@ -73,6 +90,9 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             Toast.makeText(holder.itemView.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
         });
+        if(viewName.equals("HOME")) {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
 
@@ -83,23 +103,28 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleTextView;
-        private final TextView descriptionTextView;
+        private final TextView category;
         private final TextView locationTextView;
+        private final TextView services;
         private final Button bookMarkButton;
         private final Button deleteButton;
 
         private final ImageView imageView;
+
+        private final TextView distance;
         BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
             super(itemView);
             businessBookMarkDBHelper = new BusinessBookMarkDBHelper(itemView.getContext());
             titleTextView = itemView.findViewById(R.id.titleTextView);
-            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
+            category = itemView.findViewById(R.id.category);
             locationTextView = itemView.findViewById(R.id.locationTextView);
             bookMarkButton = itemView.findViewById(R.id.bookmarkButton);
             deleteButton = itemView.findViewById(R.id.delButton);
             imageView = itemView.findViewById(R.id.businessImage);
+            services= itemView.findViewById(R.id.services);
+            distance = itemView.findViewById(R.id.distance);
             imageView.setOnClickListener(view1 -> {
                 Activity activity = (Activity) view1.getContext();
                 Intent intent = new Intent(activity, DetailPageActivity.class);
@@ -131,17 +156,17 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             }
         }
 
-        private Business getDataFromView(View view) {
-            Integer id = getTFromView(Integer.class, view, R.id.businessCardId);
-            String street = getTFromView(String.class, view, R.id.locationTextView);
-            String description = getTFromView(String.class, view, R.id.descriptionTextView);
-            String title = getTFromView(String.class, view, R.id.titleTextView);
-
-            Location location = new Location();
-            location.street = street;
-//            location.coordinates= new double[2];
-            return new Business(id, title, description, location, 5);
-        }
+//        private Business getDataFromView(View view) {
+//            String id = getTFromView(String.class, view, R.id.businessCardId);
+//            String street = getTFromView(String.class, view, R.id.locationTextView);
+//            String category = getTFromView(String.class, view, R.id.category);
+//            String title = getTFromView(String.class, view, R.id.titleTextView);
+//
+//            Location location = new Location();
+//            location.street = street;
+////            location.coordinates= new double[2];
+//            return new Business(id, title, description, location, 5);
+//        }
 
     }
 }

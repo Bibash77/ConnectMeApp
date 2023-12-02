@@ -7,16 +7,19 @@
         android:title="Setting"
         android:tooltipText="setting"
         android:icon="@drawable/filtericon"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+       />
 
     <item android:id="@+id/logout"
         android:title="Logout"
         android:tooltipText="Logout"
+        app:showAsAction="never"
         android:icon="@drawable/filtericon"
-        app:showAsAction="never"/>
+        />
 
-    <item android:id="@+id/about"
+    <item android:id="@+id/filter"
         android:title="Filter"
+        android:icon="@drawable/ic_setting"
         app:showAsAction="always"/>
 
 </menu>

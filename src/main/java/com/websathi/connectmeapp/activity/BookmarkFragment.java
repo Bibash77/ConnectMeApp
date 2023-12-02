@@ -13,11 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.adapter.BusinessCardApater;
-import com.websathi.connectmeapp.helper.BusinessBookMarkDBHelper;
-import com.websathi.connectmeapp.model.business.Business;
-import com.websathi.connectmeapp.model.business.Location;
-
-import java.util.ArrayList;
+import com.websathi.connectmeapp.helper.db.BusinessBookMarkDBHelper;
 
 public class BookmarkFragment extends Fragment {
     private BusinessCardApater adapter;
@@ -31,23 +27,9 @@ public class BookmarkFragment extends Fragment {
         businessBookMarkDBHelper = new BusinessBookMarkDBHelper(getContext());
         recyclerView = view.findViewById(R.id.bookmarked_business_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new BusinessCardApater(businessBookMarkDBHelper.getAllBookMarkedItems());
+        adapter = new BusinessCardApater(businessBookMarkDBHelper.getAllBookMarkedItems(), "BOOKMARK");
         recyclerView.setAdapter(adapter);
-
         return view;
-    }
-
-    private ArrayList<Business> getBusinesses() {
-        ArrayList<Business> businesses = new ArrayList<>();
-        int j = 0;
-        while(j < 100) {
-            Location location = new Location();
-            location.street="Charkhal Rd, Kathmandu 44605";
-            location.coordinates= new double[2];
-            businesses.add(new Business(1, "Leapfrog Technology, Inc.","Software company", location, 5));
-            j++;
-        }
-        return businesses;
     }
 
 }

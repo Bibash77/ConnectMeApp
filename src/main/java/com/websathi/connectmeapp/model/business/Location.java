@@ -1,5 +1,7 @@
 package com.websathi.connectmeapp.model.business;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,6 @@ import lombok.Setter;
 public class Location {
     public String type;
 
-    public String street;
-    public double[] coordinates;
+    public String formattedAddress;
+    public List<Double> coordinates;
 }

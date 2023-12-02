@@ -1,4 +1,4 @@
-package com.websathi.connectmeapp.helper;
+package com.websathi.connectmeapp.helper.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,16 +14,16 @@ import com.websathi.connectmeapp.model.business.Location;
 import java.util.ArrayList;
 
 public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "busines";
+    private static final String DATABASE_NAME = "business";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String Business_BOOKMARK_TABLE = "business_bookmark";
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS business_bookmark";
 
-    private static final String BUSINESS_TABLE_QUERY = "CREATE TABLE business_bookmark( id INTEGER PRIMARY KEY AUTOINCREMENT , " +
-            "name VARCHAR, street VARCHAR, description VARCHAR, image varchar)";
+    private static final String BUSINESS_TABLE_QUERY = "CREATE TABLE business_bookmark( id VARCHAR PRIMARY KEY  , " +
+            "name VARCHAR, formattedAddress VARCHAR, description VARCHAR, image varchar)";
 
 
 
@@ -43,13 +43,13 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
     }
 
     public long insert(Business business) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("id", business.id);
         contentValues.put("name", business.name);
-        contentValues.put("street", business.location.street);
+        contentValues.put("formattedAddress", business.location.formattedAddress);
         contentValues.put("description", business.description);
         System.out.println(business.description);
 //        contentValues.put("image", business.photos);
@@ -59,7 +59,7 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
         return rowId;
     }
 
-    public int deleteData(Integer id) {
+    public int deleteData(String id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         int rowId = sqLiteDatabase.delete(Business_BOOKMARK_TABLE, "id=?",  new String[]{String.valueOf(id)});
@@ -72,21 +72,19 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Business_BOOKMARK_TABLE, null);
         ArrayList<Business> businesses = new ArrayList<>();
-        if (cursor.moveToFirst()) {
+
             while (cursor.moveToNext()) {
                 Business business = new Business();
                 business.location = new Location();
-                business.id = cursor.getInt(0);
+                business.id = cursor.getString(0);
                 business.name = cursor.getString(1);
-                business.location.street  = cursor.getString(2);
+                business.location.formattedAddress = cursor.getString(2);
                 business.description = cursor.getString(3);
 
 
 
                 businesses.add(business);
             }
-
-        }
         cursor.close();
         return businesses;
     }

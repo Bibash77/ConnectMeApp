@@ -6,18 +6,10 @@
     android:orientation="horizontal"
     android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/businessImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:scaleType="centerCrop"
-        android:src="@drawable/noimage" />
-
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.6">
+        android:layout_weight="0.7">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,22 +26,91 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Software company"
-                android:textSize="18sp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/totalRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.0"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    />
+                <RatingBar
+                    android:id="@+id/MyRating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.2"
+                    android:rating="4"
+                    android:theme="@style/RatingBar"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@id/totalRating"
+                    />
+
+                <TextView
+                    android:id="@+id/totalReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(1)"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_toRightOf="@id/MyRating"
+                    />
+                <TextView
+                    android:id="@+id/dash"
+                    android:layout_width="wrap_content"
+                    android:text="-"
+                    android:layout_toRightOf="@id/totalReviews"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    />
+                <TextView
+                    android:id="@+id/category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Software company"
+                    android:textSize="12sp"
+                    android:paddingLeft="5dp"
+                    android:layout_toRightOf="@id/dash"
+                    />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/locationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="Charkhal Rd, Kathmandu 44605"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                />
+
+            <TextView
+                android:id="@+id/services"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Software Development, Website Development"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                />
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/purple_500"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:gravity="start"
+                android:layout_marginTop="2dp"
+                />
 
             <TextView
                 android:id="@+id/businessCardId"
@@ -64,9 +125,9 @@
 
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bookmarkButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="16dp"
@@ -77,7 +138,7 @@
 
         <Button
             android:id="@+id/delButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/bookmarkButton"
@@ -87,5 +148,12 @@
             />
 
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/businessImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/noimage" />
 
 </LinearLayout>

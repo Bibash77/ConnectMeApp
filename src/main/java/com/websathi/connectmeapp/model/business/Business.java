@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Business {
 
     @SerializedName("_id")
-    public Integer id;
+    public String id;
     public String name;
     public String email;
     public String contact;
@@ -29,7 +29,9 @@ public class Business {
     public List<Review> reviews;
     public List<String> photos;
 
-    public Business(final Integer id, final String name, final String description , final Location location, final int rating) {
+    public String distance;
+
+    public Business(final String id, final String name, final String description , final Location location, final int rating) {
         this.id = id;
         this.name = name;
         this.description = description;
