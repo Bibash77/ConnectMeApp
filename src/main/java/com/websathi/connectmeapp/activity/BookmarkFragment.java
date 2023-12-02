@@ -27,7 +27,7 @@ public class BookmarkFragment extends Fragment {
         businessBookMarkDBHelper = new BusinessBookMarkDBHelper(getContext());
         recyclerView = view.findViewById(R.id.bookmarked_business_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new BusinessCardApater(businessBookMarkDBHelper.getAllBookMarkedItems());
+        adapter = new BusinessCardApater(businessBookMarkDBHelper.getAllBookMarkedItems(), "BOOKMARK");
         recyclerView.setAdapter(adapter);
         return view;
     }

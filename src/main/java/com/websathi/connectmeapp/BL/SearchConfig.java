@@ -19,6 +19,7 @@ public class SearchConfig {
     private String latitude;
     private String rating;
 
+    private String formattedAddress;
     public SearchConfig() {
     }
 
@@ -48,6 +49,14 @@ public class SearchConfig {
 
     public String getLongitude() {
         return this.longitude;
+    }
+
+    public String getFormattedAddress() {
+        return this.formattedAddress;
+    }
+
+    public void setFormattedAddress(final String formattedAddress) {
+        this.formattedAddress = formattedAddress;
     }
 
     public void setLongitude(final String longitude) {

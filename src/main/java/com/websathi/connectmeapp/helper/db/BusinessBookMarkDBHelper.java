@@ -14,9 +14,9 @@ import com.websathi.connectmeapp.model.business.Location;
 import java.util.ArrayList;
 
 public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "busines";
+    private static final String DATABASE_NAME = "business";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String Business_BOOKMARK_TABLE = "business_bookmark";
 

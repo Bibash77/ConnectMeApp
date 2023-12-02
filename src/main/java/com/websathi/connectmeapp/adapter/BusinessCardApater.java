@@ -29,8 +29,14 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
 
     private BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
+    private String viewName;
+
     public BusinessCardApater(final List<Business> businessArrayList) {
         this.businessArrayList = (ArrayList<Business>) businessArrayList;
+    }
+    public BusinessCardApater(final List<Business> businessArrayList, final String viewName) {
+        this.businessArrayList = (ArrayList<Business>) businessArrayList;
+        this.viewName=viewName;
     }
 
     @NonNull
@@ -55,6 +61,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
                     .collect(Collectors.joining(", "));
             holder.services.setText(serviceTotal);
         }
+        holder.distance.setText(business.distance + " KM");
 
         holder.bookMarkButton.setOnClickListener(view -> {
             System.out.println("book mark button clicked");
@@ -68,6 +75,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
                     }
                     System.out.println(rowId);
                 } catch (RuntimeException e) {
+                    e.printStackTrace();
                     System.out.println("issue occured");
                    // do nothing
                 }
@@ -82,6 +90,9 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             Toast.makeText(holder.itemView.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
         });
+        if(viewName.equals("HOME")) {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
 
@@ -99,6 +110,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final Button deleteButton;
 
         private final ImageView imageView;
+
+        private final TextView distance;
         BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
@@ -111,6 +124,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             deleteButton = itemView.findViewById(R.id.delButton);
             imageView = itemView.findViewById(R.id.businessImage);
             services= itemView.findViewById(R.id.services);
+            distance = itemView.findViewById(R.id.distance);
             imageView.setOnClickListener(view1 -> {
                 Activity activity = (Activity) view1.getContext();
                 Intent intent = new Intent(activity, DetailPageActivity.class);

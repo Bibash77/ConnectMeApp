@@ -29,6 +29,8 @@ public class Business {
     public List<Review> reviews;
     public List<String> photos;
 
+    public String distance;
+
     public Business(final String id, final String name, final String description , final Location location, final int rating) {
         this.id = id;
         this.name = name;

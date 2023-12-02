@@ -1,6 +1,9 @@
 package com.websathi.connectmeapp.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,11 +11,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.websathi.connectmeapp.R;
@@ -41,8 +48,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .addToBackStack(null)
+                    .commit();
             navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // ask permissions here using below code
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
         }
     }
 
@@ -107,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
 
-            case R.id.about:
+            case R.id.filter:
                 Intent intent = new Intent(this, SearchSettingActivity.class);
 //                intent.putExtra("testData", 1)
                 startActivity(intent);
@@ -116,5 +135,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null && data.getBooleanExtra("refreshData", false)) {
+                // Refresh data here
+                Toast.makeText(this, "Data refreshed", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

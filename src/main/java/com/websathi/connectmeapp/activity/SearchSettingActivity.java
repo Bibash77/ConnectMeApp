@@ -1,15 +1,20 @@
 package com.websathi.connectmeapp.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,233 +31,315 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.websathi.connectmeapp.BL.SearchConfig;
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.helper.db.BusinessBookMarkDBHelper;
 import com.websathi.connectmeapp.helper.db.SearchSettingDBHelper;
+import com.websathi.connectmeapp.utils.LocationUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 public class SearchSettingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    boolean[] selectedLanguage;
-    ArrayList<Integer> categoriesList = new ArrayList<>();
+    private final String[] categories = {"COLLEGE", "RESTAURANT", "HOSPITAL", "GOVERNMENT-OFFICE", "IT-COMPANY"};
+    private boolean[] selectedCategories;
     private FusedLocationProviderClient fusedLocationClient;
     private Location userCurrentLocation;
     private SeekBar locationRadiusSeekBar;
     private TextView textLocationRadiusValue;
+
+    private TextView locationSelectedData;
     private SeekBar ratingSeekBar;
     private TextView ratingValue;
-    private final String[] categories = {"COLLEGE", "RESTAURANT", "HOSPITAL", "GOVERNMENT-OFFICE", "IT-COMPANY"};
     private TextView categoryOptions;
     private SearchSettingDBHelper searchSettingDBHelper;
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view =  inflater.inflate(R.layout.fragment_serach_setting, container, false);
-//        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMapFragment);
-//        mapFragment.getMapAsync(this);
-//        setHasOptionsMenu(true);
-//
-//        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//
-//        return view;
-//    }
+    private SearchConfig searchConfig;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        this.fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(final Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            SearchSettingActivity.this.userCurrentLocation = location;
-                        }
-                    }
-                }).addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull final Exception e) {
-                        SearchSettingActivity.this.userCurrentLocation = new Location("");
-                        SearchSettingActivity.this.userCurrentLocation.setLatitude(27.707627944721672);
-                        SearchSettingActivity.this.userCurrentLocation.setLongitude(85.32192786686072);
-                    }
-                });
+        LocationUtils.initialize(this);
+        setContentView(R.layout.fragment_serach_setting);
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        initializeUserLocation();
 
-        this.setContentView(R.layout.fragment_serach_setting);
-        searchSettingDBHelper = new SearchSettingDBHelper(this.getApplicationContext());
+        searchSettingDBHelper = new SearchSettingDBHelper(getApplicationContext());
+        searchConfig = searchSettingDBHelper.getDefaultValues();
 
-        this.textLocationRadiusValue = this.findViewById(R.id.text_location_radius_value);
-        this.locationRadiusSeekBar = this.findViewById(R.id.seekbar_location_radius);
-
-        this.categoryOptions = this.findViewById(R.id.categoryOptions);
-        this.selectedLanguage = new boolean[this.categories.length];
-
-
-        ratingSeekBar = findViewById(R.id.seekbar_rating);
-        this.ratingValue = this.findViewById(R.id.text_rating_value);
-
+        initializeViews();
         configLocationRadiusSeekBar();
         configRatingSeekBar();
         configureCategoryDropDown();
 
+        if (searchConfig != null) {
+            updateView(searchConfig);
+        }
 
-        final SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager()
-                .findFragmentById(R.id.googleMapFragment);
-        final ActionBar actionBar = this.getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMapFragment);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         mapFragment.getMapAsync(this);
     }
 
+//    private void initializeUserLocation() {
+//        fusedLocationClient.getLastLocation()
+//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        userCurrentLocation = (location != null) ? location : new Location("");
+//                        userCurrentLocation.setLatitude(27.707627944721672);
+//                        userCurrentLocation.setLongitude(85.32192786686072);
+//                    }
+//                })
+//                .addOnFailureListener(this, new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        userCurrentLocation = new Location("");
+//                        userCurrentLocation.setLatitude(27.707627944721672);
+//                        userCurrentLocation.setLongitude(85.32192786686072);
+//                    }
+//                });
+//    }
 
+    private void initializeViews() {
+        textLocationRadiusValue = findViewById(R.id.text_location_radius_value);
+        locationSelectedData = findViewById(R.id.locationSelectedData);
+        locationRadiusSeekBar = findViewById(R.id.seekbar_location_radius);
+        categoryOptions = findViewById(R.id.categoryOptions);
+        selectedCategories = new boolean[categories.length];
+        ratingSeekBar = findViewById(R.id.seekbar_rating);
+        ratingValue = findViewById(R.id.text_rating_value);
+    }
 
+    private void updateView(SearchConfig searchConfig) {
+        ratingSeekBar.setProgress(Integer.parseInt(searchConfig.getRating()));
+        ratingValue.setText(searchConfig.getRating() + " Star");
+
+        locationRadiusSeekBar.setProgress(Integer.parseInt(searchConfig.getRadius()));
+        textLocationRadiusValue.setText(searchConfig.getRadius() + " KM");
+
+        String[] selectedCategoriesArray = searchConfig.getCategories().split(",");
+        Arrays.fill(selectedCategories, false);
+
+        for (String selectedCategory : selectedCategoriesArray) {
+            int index = Arrays.asList(categories).indexOf(selectedCategory);
+            if (index != -1) {
+                selectedCategories[index] = true;
+            }
+        }
+
+        updateSelectedCategoriesText();
+    }
 
     private void configLocationRadiusSeekBar() {
-        this.locationRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        locationRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(final SeekBar seekBar, final int i, final boolean b) {
-                SearchSettingActivity.this.textLocationRadiusValue.setText(i + " KM");
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textLocationRadiusValue.setText(i + " KM");
                 searchSettingDBHelper.updateValue("radius", String.valueOf(i));
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {
-
+            public void onStartTrackingTouch(SeekBar seekBar) {
             }
 
             @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {
-
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
     }
 
     private void configRatingSeekBar() {
-        this.ratingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        ratingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(final SeekBar seekBar, final int i, final boolean b) {
-                SearchSettingActivity.this.ratingValue.setText(i + " Star");
-                searchSettingDBHelper.updateValue("radius", String.valueOf(i));
-
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                ratingValue.setText(i + " Star");
+                searchSettingDBHelper.updateValue("rating", String.valueOf(i));
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {
-
+            public void onStartTrackingTouch(SeekBar seekBar) {
             }
 
             @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {
-
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
     }
 
     private void configureCategoryDropDown() {
-        this.categoryOptions.setOnClickListener(new View.OnClickListener() {
+        categoryOptions.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View view) {
-
-                // Initialize alert dialog
-                final AlertDialog.Builder builder = new AlertDialog.Builder(SearchSettingActivity.this);
-
-                // set title
-                builder.setTitle("Select Categories");
-
-                // set dialog non cancelable
-                builder.setCancelable(false);
-
-                builder.setMultiChoiceItems(categories, selectedLanguage, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i, final boolean b) {
-                        // check condition
-                        if (b) {
-                            // when checkbox selected
-                            // Add position  in lang list
-                            categoriesList.add(i);
-                            // Sort array list
-                            Collections.sort(categoriesList);
-                        } else {
-                            // when checkbox unselected
-                            // Remove position from langList
-                            categoriesList.remove(Integer.valueOf(i));
-                        }
-                    }
-                });
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i) {
-                        // Initialize string builder
-                        final StringBuilder stringBuilder = new StringBuilder();
-                        // use for loop
-                        for (int j = 0; j < categoriesList.size(); j++) {
-                            // concat array value
-                            stringBuilder.append(categories[SearchSettingActivity.this.categoriesList.get(j)]);
-                            // check condition
-                            if (j != categoriesList.size() - 1) {
-                                // When j value  not equal
-                                // to lang list size - 1
-                                // add comma
-                                stringBuilder.append(", ");
-                            }
-                        }
-                        // set text on textView
-                        SearchSettingActivity.this.categoryOptions.setText(stringBuilder.toString());
-                        searchSettingDBHelper.updateValue("categories", stringBuilder.toString());
-
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i) {
-                        // dismiss dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialogInterface, final int i) {
-                        // use for loop
-                        for (int j = 0; j < selectedLanguage.length; j++) {
-                            // remove all selection
-                            selectedLanguage[j] = false;
-                            // clear language list
-                            categoriesList.clear();
-                            // clear text view value
-                            categoryOptions.setText("");
-                        }
-                    }
-                });
-                // show dialog
-                builder.show();
+            public void onClick(View view) {
+                showCategoryDialog();
             }
         });
     }
 
+    private void showCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchSettingActivity.this);
+        builder.setTitle("Select Categories");
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(categories, selectedCategories, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                selectedCategories[i] = b;
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                updateSelectedCategoriesText();
+                updateSelectedCategoriesInDB();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Arrays.fill(selectedCategories, false);
+                updateSelectedCategoriesText();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void updateSelectedCategoriesText() {
+        List<String> selectedCategoriesList = new ArrayList<>();
+        for (int i = 0; i < selectedCategories.length; i++) {
+            if (selectedCategories[i]) {
+                selectedCategoriesList.add(categories[i]);
+            }
+        }
+
+        categoryOptions.setText(TextUtils.join(", ", selectedCategoriesList));
+    }
+
+    private void updateSelectedCategoriesInDB() {
+        List<String> selectedCategoriesList = new ArrayList<>();
+        for (int i = 0; i < selectedCategories.length; i++) {
+            if (selectedCategories[i]) {
+                selectedCategoriesList.add(categories[i]);
+            }
+        }
+
+        searchSettingDBHelper.updateValue("categories", TextUtils.join(",", selectedCategoriesList));
+    }
 
     @Override
-    public void onMapReady(@NonNull final GoogleMap googleMap) {
-        final LatLng latLng = new LatLng(27.707627944721672, 85.32192786686072);
-        googleMap.addMarker(new MarkerOptions()
-                .position(latLng));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f));
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        if(searchConfig.getLatitude() != null && searchConfig.getLongitude() != null) {
+            LatLng latLng = new LatLng(Double.valueOf(searchConfig.getLatitude()), Double.valueOf(searchConfig.getLongitude()));
+            googleMap.addMarker(new MarkerOptions().position(latLng));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f));
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            locationSelectedData.setText(searchConfig.getFormattedAddress());
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    // Handle the click event, for example, place a marker
+                    googleMap.clear(); // Clear existing markers
+                    googleMap.addMarker(new MarkerOptions().position(latLng));
+                    String address = getCompleteAddressString(Double.valueOf(searchConfig.getLatitude()), Double.valueOf(searchConfig.getLongitude()));
+                    locationSelectedData.setText(address);
+                    // You can also save the selected location for later use
+                    saveSelectedLocation(latLng);
+                }
+            });
+        } else {
+            LocationUtils.getLastKnownLocation(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        googleMap.addMarker(new MarkerOptions().position(latLng));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f));
+                        saveSelectedLocation(latLng);
+                    }
+                    googleMap.getUiSettings().setZoomControlsEnabled(true);
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            // Handle the click event, for example, place a marker
+                            googleMap.clear(); // Clear existing markers
+                            googleMap.addMarker(new MarkerOptions().position(latLng));
+
+                            String address = getCompleteAddressString(latLng.latitude, latLng.longitude);
+                            locationSelectedData.setText(address);
+                            // You can also save the selected location for later use
+                            saveSelectedLocation(latLng);
+                        }
+                    });
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SearchSettingActivity.this, "Please Give Location Permission to continue", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
 
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                this.finish();
-//                return true;
-//        }
-        finish();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        this.finish();
         return true;
+    }
+
+    private void saveSelectedLocation(LatLng latLng) {
+        searchSettingDBHelper.updateValue("latitude", String.valueOf(latLng.latitude));
+        searchSettingDBHelper.updateValue("longitude", String.valueOf(latLng.longitude));
+        searchSettingDBHelper.updateValue("formatted_address", locationSelectedData.getText().toString());
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        // Set a flag to indicate that data should be refreshed
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("refreshData", true);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                System.out.println(strReturnedAddress.toString());
+            } else {
+                System.out.println("no address");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("My Current loction address" + "Canont get Address!");
+        }
+        return strAdd;
     }
 }

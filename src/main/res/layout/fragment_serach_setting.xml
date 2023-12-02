@@ -112,10 +112,24 @@
         android:textSize="18sp"
         android:text="Your location" />
 
+    <TextView
+        android:id="@+id/locationSelectedData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:background="@android:drawable/editbox_background"
+        android:drawablePadding="16dp"
+        android:layout_below="@id/locationTextData"
+        android:hint="co-ordinates: "
+        android:padding="12dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/googleMapFragment"
-        android:layout_below="@id/locationTextData"
+        android:layout_below="@id/locationSelectedData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>

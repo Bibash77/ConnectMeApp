@@ -40,15 +40,27 @@ public class SearchDto {
         private String services;
         private String reviews;
         private Coordinates coordinates;
-        private int radius;
+        private Integer radius;
 
-        // Constructors, getters, and setters
+        private String searchHistory;
+
+        public String getSearchHistory() {
+            return this.searchHistory;
+        }
+
+        public void setSearchHistory(final String searchHistory) {
+            this.searchHistory = searchHistory;
+        }
 
         public static class Coordinates {
-            private double latitude;
-            private double longitude;
+            private String latitude;
+            private String longitude;
 
-            // Constructors, getters, and setters
+            public Coordinates(final String latitude, final String longitude) {
+                this.latitude = latitude;
+                this.longitude = longitude;
+            }
+// Constructors, getters, and setters
         }
     }
 
