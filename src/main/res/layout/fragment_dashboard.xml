@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F7F9"
+    >
+
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/categoryCard"
+    android:layout_width="match_parent"
+    android:layout_height="290dp"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="20dp"
+    android:background="#FFFFFF"
+    android:layout_margin="8sp"
+    >
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <TextView
+         android:id="@+id/topCategoryText"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/top_category"
+         android:textAppearance="@style/top_categor"
+         android:gravity="center"
+         android:padding="8dp"
+         android:layout_marginLeft="10dp"
+         />
+     <androidx.recyclerview.widget.RecyclerView
+         android:layout_below="@+id/topCategoryText"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:scrollbars="vertical"
+         android:layout_marginTop="5dp"
+         android:id="@+id/recyclerView">
+
+     </androidx.recyclerview.widget.RecyclerView>
+ </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_below="@id/categoryCard"
+        android:layout_marginTop="20dp"
+        android:layout_margin="8sp"
+        android:minHeight="650dp"
+        >
+        <TextView
+            android:id="@+id/top_busines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/top_busines"
+            android:textAppearance="@style/top_busines"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="10dp"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="40dp"
+            android:id="@+id/business_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_busines"
+            android:padding="8dp"
+            tools:listitem="@layout/item_business_card"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:text="No Business Near You !!!"
+            android:layout_marginTop="50dp"
+
+            />
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

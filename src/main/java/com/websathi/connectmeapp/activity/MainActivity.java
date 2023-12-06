@@ -86,13 +86,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.dashboard:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+                break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
 
-            case R.id.nav_add_business:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddBusinessFragment()).commit();
-                break;
+//            case R.id.nav_add_business:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddBusinessFragment()).commit();
+//                break;
 
 //            case R.id.nav_search_settings:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchSettingFragment()).commit();

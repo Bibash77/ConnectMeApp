@@ -121,9 +121,10 @@ public class HomeFragment extends Fragment {
         searchDto.setLimit(20);
         searchDto.setPage(1);
         SearchDto.SearchField searchField = new SearchDto.SearchField();
-        searchField.setSearchHistory(TextUtils.join("," , searchHistoryDBHelper.getLatestSearchQueries()));
+//        searchField.setSearchHistory(TextUtils.join("," , searchHistoryDBHelper.getLatestSearchQueries()));
         searchDto.setSearchField(searchField);
         searchField.setName(query);
+        searchField.setCategory(searchConfig.getCategories());
         searchField.setCoordinates(new SearchDto.SearchField.Coordinates(searchConfig.getLatitude(), searchConfig.getLongitude()));
         searchField.setRadius(Integer.parseInt(searchConfig.getRadius()));
         getBusinesses(searchDto);

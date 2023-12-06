@@ -42,7 +42,7 @@ import java.util.Locale;
 
 public class SearchSettingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private final String[] categories = {"COLLEGE", "RESTAURANT", "HOSPITAL", "GOVERNMENT-OFFICE", "IT-COMPANY"};
+    private final String[] categories = {"COLLEGE", "RESTAURANT", "HOSPITAL", "GOVERNMENT OFFICE", "IT COMPANY"};
     private boolean[] selectedCategories;
     private FusedLocationProviderClient fusedLocationClient;
     private Location userCurrentLocation;

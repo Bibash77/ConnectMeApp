@@ -25,13 +25,13 @@ public class Business {
     public List<Service> services;
     public Location location;
     public String category;
-    public int rating;
+    public Double rating;
     public List<Review> reviews;
     public List<String> photos;
 
     public String distance;
 
-    public Business(final String id, final String name, final String description , final Location location, final int rating) {
+    public Business(final String id, final String name, final String description , final Location location, final Double rating) {
         this.id = id;
         this.name = name;
         this.description = description;

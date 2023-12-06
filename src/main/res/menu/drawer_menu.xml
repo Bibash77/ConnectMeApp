@@ -3,24 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/dashboard"
+            android:icon="@drawable/ic_home"
+            android:title="Dashboard" />
+
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:icon="@drawable/ic_add_business"
+            android:title="Businesses" />
 
         <item
             android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_bookmark_saved"
             android:title="BookMarks" />
 
-        <item
-            android:id="@+id/nav_add_business"
-            android:icon="@drawable/ic_add_business"
-            android:title="Add your business" />
 <!--        <item-->
-<!--            android:id="@+id/nav_search_settings"-->
-<!--            android:icon="@drawable/ic_setting"-->
-<!--            android:title="Search Settings" />-->
+<!--            android:id="@+id/nav_add_business"-->
+<!--            android:icon="@drawable/ic_add_business"-->
+<!--            android:title="Add your business" />-->
         <item
             android:id="@+id/nav_account_setting"
             android:icon="@drawable/ic_account_setting"
