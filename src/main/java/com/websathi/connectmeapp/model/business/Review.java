@@ -15,7 +15,7 @@ public class Review {
 
     @SerializedName("_id")
     public String id;
-    public String reviewerName;
+    public String name;
     public String comment;
     public Integer rating;
 }
