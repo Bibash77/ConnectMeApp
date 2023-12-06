@@ -6,6 +6,12 @@
     <string name="search_hint">Enter the Business Name</string>
 
 
-    <!--    <string name="map_key">AIzaSyCJKU3rPOXXQ9Trg8vyFxlR5V3YlObHGZQ</string>-->
     <string name="map_key">AIzaSyDmisMZoQ_RQty6i3ega9XVk584JTPRD2E</string>
+    <string name="top_category">
+            Top Categories
+        </string>
+    <!-- strings.xml -->
+    <string name="top_busines">
+Top business near you
+</string>
 </resources>
