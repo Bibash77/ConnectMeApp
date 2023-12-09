@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.fragment_container, new DashboardFragment())
                     .addToBackStack(null)
                     .commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            navigationView.setCheckedItem(R.id.dashboard);
         }
 
         int permissionCheck = ContextCompat.checkSelfPermission(this,

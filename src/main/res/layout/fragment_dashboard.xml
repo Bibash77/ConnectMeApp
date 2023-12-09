@@ -11,7 +11,7 @@
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/categoryCard"
     android:layout_width="match_parent"
-    android:layout_height="290dp"
+    android:layout_height="210dp"
     android:layout_centerHorizontal="true"
     android:layout_alignParentTop="true"
     android:layout_marginTop="20dp"
@@ -29,17 +29,18 @@
          android:textAppearance="@style/top_categor"
          android:gravity="center"
          android:padding="8dp"
-         android:layout_marginLeft="10dp"
+         android:layout_marginStart="10dp"
          />
-     <androidx.recyclerview.widget.RecyclerView
-         android:layout_below="@+id/topCategoryText"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:scrollbars="vertical"
-         android:layout_marginTop="5dp"
-         android:id="@+id/recyclerView">
-
-     </androidx.recyclerview.widget.RecyclerView>
+         <androidx.recyclerview.widget.RecyclerView
+             android:layout_below="@+id/topCategoryText"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:scrollbars="vertical"
+             android:layout_marginTop="5dp"
+             android:id="@+id/recyclerView"
+             tools:listitem="@layout/list_item"
+             >
+         </androidx.recyclerview.widget.RecyclerView>
  </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
 
@@ -48,7 +49,6 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_below="@id/categoryCard"
-        android:layout_marginTop="20dp"
         android:layout_margin="8sp"
         android:minHeight="650dp"
         >
@@ -64,7 +64,7 @@
             />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="40dp"
-            android:id="@+id/business_list"
+            android:id="@+id/business_list_dashboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/top_busines"
@@ -72,7 +72,8 @@
             tools:listitem="@layout/item_business_card"
             />
 
-        <EditText
+        <TextView
+            android:id="@+id/noBusinessFound"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

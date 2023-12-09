@@ -4,22 +4,23 @@ package com.websathi.connectmeapp.adapter;
 import android.view.LayoutInflater;  
 import android.view.View;  
 import android.view.ViewGroup;  
-import android.widget.ImageView;  
-import android.widget.RelativeLayout;  
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;  
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.websathi.connectmeapp.R;
-import com.websathi.connectmeapp.model.business.MyListData;
+import com.websathi.connectmeapp.model.business.CategoryResponseDto;
 
 
 public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
-    private MyListData[] listdata;
+    private CategoryResponseDto[] listdata;
   
    // RecyclerView recyclerView;  
-    public MyListAdapter(MyListData[] listdata) {  
+    public MyListAdapter(CategoryResponseDto[] listdata) {
         this.listdata = listdata;  
     }  
     @Override  
@@ -32,32 +33,35 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
   
     @Override  
     public void onBindViewHolder(ViewHolder holder, int position) {  
-        final MyListData myListData = listdata[position];  
-        holder.textView.setText(listdata[position].getDescription());  
+        final CategoryResponseDto categoryResponseDto = listdata[position];
+        holder.textView.setText(listdata[position].getName());
         holder.imageView.setImageResource(listdata[position].getImgId());  
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {  
             @Override  
             public void onClick(View view) {  
-                Toast.makeText(view.getContext(),"click on item: "+myListData.getDescription(),Toast.LENGTH_LONG).show();  
+                Toast.makeText(view.getContext(),"click on item: "+ categoryResponseDto.getName(),Toast.LENGTH_LONG).show();
             }  
         });  
     }  
   
   
     @Override  
-    public int getItemCount() {  
+    public int getItemCount() {
+        if(listdata == null ){
+            return 0;
+        }
         return listdata.length;  
     }  
   
     public static class ViewHolder extends RecyclerView.ViewHolder {  
         public ImageView imageView;  
         public TextView textView;  
-        public RelativeLayout relativeLayout;  
-        public ViewHolder(View itemView) {  
+        public CardView relativeLayout;
+        public ViewHolder(View itemView) {
             super(itemView);  
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);  
             this.textView = (TextView) itemView.findViewById(R.id.textView);  
-            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);  
+            relativeLayout = (CardView) itemView.findViewById(R.id.relativeLayout);
         }  
     }  
 }  

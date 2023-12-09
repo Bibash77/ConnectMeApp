@@ -21,7 +21,7 @@ public interface APIService {
     Call<BusinessResponse> createBusiness(@Body Business business);
 
 
-    @POST("business/get-dashboard-data")
+    @POST("business/paginated")
     Call<PaginatedResponse> getAllBusinessPaginated(@Body SearchDto searchDto);
 
 

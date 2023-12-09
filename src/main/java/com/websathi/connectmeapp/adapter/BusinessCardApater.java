@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,11 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         }
         holder.distance.setText(business.distance + " KM");
 
+        if(business.rating != null) {
+            holder.rating.setText(business.rating.toString());
+            holder.ratingBar.setRating(business.rating);
+        }
+
         holder.bookMarkButton.setOnClickListener(view -> {
             System.out.println("book mark button clicked");
                 // Use the business object as needed
@@ -112,6 +118,10 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final ImageView imageView;
 
         private final TextView distance;
+
+        private final TextView rating;
+
+        private final RatingBar ratingBar;
         BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
@@ -125,6 +135,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             imageView = itemView.findViewById(R.id.businessImage);
             services= itemView.findViewById(R.id.services);
             distance = itemView.findViewById(R.id.distance);
+            rating = itemView.findViewById(R.id.totalRating);
+            ratingBar = itemView.findViewById(R.id.MyRating);
             imageView.setOnClickListener(view1 -> {
                 Activity activity = (Activity) view1.getContext();
                 Intent intent = new Intent(activity, DetailPageActivity.class);
