@@ -16,6 +16,11 @@ public class CoordinatesDTO {
         return longitude;
     }
 
+    public CoordinatesDTO(final String latitude, final String longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }

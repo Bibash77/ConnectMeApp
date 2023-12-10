@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.websathi.connectmeapp.BL.SearchConfig;
 import com.websathi.connectmeapp.R;
 import com.websathi.connectmeapp.adapter.BusinessCardApater;
 import com.websathi.connectmeapp.adapter.MyListAdapter;
 import com.websathi.connectmeapp.helper.apicall.APIService;
 import com.websathi.connectmeapp.helper.apicall.APiHelper;
 import com.websathi.connectmeapp.helper.db.SearchHistoryDBHelper;
+import com.websathi.connectmeapp.helper.db.SearchSettingDBHelper;
 import com.websathi.connectmeapp.model.business.Business;
 import com.websathi.connectmeapp.model.business.CategoryResponseDto;
+import com.websathi.connectmeapp.model.business.search.CoordinatesDTO;
 import com.websathi.connectmeapp.model.business.search.DashboardSearchDTO;
 import com.websathi.connectmeapp.model.business.search.DashboardSearchResultDTO;
 import com.websathi.connectmeapp.model.business.search.RecommendedBusinessesDTO;
@@ -40,10 +43,13 @@ public class DashboardFragment extends Fragment {
     private DashboardSearchResultDTO dashboardSearchResultDTO = new DashboardSearchResultDTO();
     private SearchHistoryDBHelper searchHistoryDBHelper;
 
+    private SearchSettingDBHelper searchSettingDBHelper;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         searchHistoryDBHelper = new SearchHistoryDBHelper(getContext());
+        searchSettingDBHelper = new SearchSettingDBHelper(getContext());
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         apiService = APiHelper.getInstance().create(APIService.class);
@@ -63,6 +69,8 @@ public class DashboardFragment extends Fragment {
     private DashboardSearchResultDTO getDashboardData(View view) {
         DashboardSearchDTO dashboardSearchDTO = new DashboardSearchDTO();
         dashboardSearchDTO.setName(searchHistoryDBHelper.getSearchHistory());
+        SearchConfig searchConfig = searchSettingDBHelper.getDefaultValues();
+        dashboardSearchDTO.setCoordinates(new CoordinatesDTO(searchConfig.getLatitude(), searchConfig.getLongitude()));
         final Call<DashboardSearchResultDTO> call = apiService.getDashboardData(dashboardSearchDTO);
         try {
             call.enqueue(new Callback<DashboardSearchResultDTO>() {
@@ -112,7 +120,7 @@ public class DashboardFragment extends Fragment {
     private void updateRecomendedBusinessData(List<Business> recommendedBusinesses, View view) {
         RecyclerView recyclerView = view.findViewById(R.id.business_list_dashboard);
         if (recommendedBusinesses != null && !recommendedBusinesses.isEmpty()) {
-            BusinessCardApater adapter = new BusinessCardApater(recommendedBusinesses, "HOME");
+            BusinessCardApater adapter = new BusinessCardApater(recommendedBusinesses, "DASHBOARD");
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
             TextView textView = view.findViewById(R.id.noBusinessFound);

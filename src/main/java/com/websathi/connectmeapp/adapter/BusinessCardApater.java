@@ -2,6 +2,7 @@ package com.websathi.connectmeapp.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         holder.titleTextView.setText(business.getName());
         holder.locationTextView.setText(business.location.formattedAddress);
         holder.category.setText(business.category);
+        holder.contactNo.setText(business.contact);
+        holder.email.setText(business.email);
         List<Service> servicesResponse = business.services;
         String serviceTotal = "N/A";
         if(servicesResponse != null) {
@@ -75,7 +78,7 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
                 try {
                     long rowId = businessBookMarkDBHelper.insert(business);
                     if(rowId != -1) {
-                        Toast.makeText(holder.itemView.getContext(), "Item Added to BookMark!!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(holder.itemView.getContext(), "Business Added to BookMark!!!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(holder.itemView.getContext(), "Already In Bookmark!!!", Toast.LENGTH_SHORT).show();
                     }
@@ -93,11 +96,21 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             System.out.println("delete button clicked");
             businessBookMarkDBHelper.deleteData(business.id);
             businessArrayList.remove(position);
-            Toast.makeText(holder.itemView.getContext(), "Item Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(holder.itemView.getContext(), "Business Removed from BookMark!!!", Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
         });
         if(viewName.equals("HOME")) {
             holder.deleteButton.setVisibility(View.GONE);
+        }
+        if(viewName.equals("DASHBOARD")){
+            holder.distance.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.GONE);
+        }
+
+        if(viewName.equals("BOOKMARK")){
+            holder.distance.setVisibility(View.GONE);
+            holder.bookMarkButton.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -122,6 +135,9 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
         private final TextView rating;
 
         private final RatingBar ratingBar;
+
+        private final TextView contactNo;
+        private final TextView email;
         BusinessBookMarkDBHelper businessBookMarkDBHelper;
 
         public CustomViewHolder(@NonNull final View itemView) {
@@ -137,12 +153,40 @@ public class BusinessCardApater extends RecyclerView.Adapter<BusinessCardApater.
             distance = itemView.findViewById(R.id.distance);
             rating = itemView.findViewById(R.id.totalRating);
             ratingBar = itemView.findViewById(R.id.MyRating);
+            contactNo = itemView.findViewById(R.id.phone);
+            email = itemView.findViewById(R.id.email);
             imageView.setOnClickListener(view1 -> {
                 Activity activity = (Activity) view1.getContext();
                 Intent intent = new Intent(activity, DetailPageActivity.class);
                 activity.startActivity(intent);
             });
 
+            contactNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                try {
+                    Uri uri = Uri.fromParts("tel", contactNo.getText().toString(), null);
+                    Intent newIntent = new Intent(Intent.ACTION_CALL, uri);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    itemView.getContext().startActivity(newIntent);
+                } catch (Exception exception) {
+                    Toast.makeText(itemView.getContext(), "Permission required", Toast.LENGTH_SHORT).show();
+                }
+                }
+            });
+
+//            email.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    final Intent intent = new Intent(Intent.ACTION_VIEW)
+//                            .setType("plain/text")
+//                            .setData(Uri.parse(email.getText().toString()))
+//                            .setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
+//                            .putExtra(Intent.EXTRA_EMAIL, new String[]{email.getText().toString()});
+//                    view.getContext().startActivity(intent);
+//                }
+//            });
+//
 
 //            .setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override

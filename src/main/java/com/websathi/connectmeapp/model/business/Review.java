@@ -17,5 +17,5 @@ public class Review {
     public String id;
     public String name;
     public String comment;
-    public Integer rating;
+    public Double rating;
 }

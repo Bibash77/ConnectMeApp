@@ -29,7 +29,7 @@ public class SearchDto {
         private String website;
         private String description;
         private String category;
-        private double rating;
+        private Double rating;
         private String location;
         private String phone;
         private String address;

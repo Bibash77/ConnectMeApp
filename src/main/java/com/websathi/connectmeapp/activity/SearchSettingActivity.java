@@ -319,7 +319,7 @@ public class SearchSettingActivity extends AppCompatActivity implements OnMapRea
     }
 
 
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+    private String getCompleteAddressString(Double LATITUDE, Double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {

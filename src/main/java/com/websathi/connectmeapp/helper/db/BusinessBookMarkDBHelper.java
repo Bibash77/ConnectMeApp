@@ -23,7 +23,7 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS business_bookmark";
 
     private static final String BUSINESS_TABLE_QUERY = "CREATE TABLE business_bookmark( id VARCHAR PRIMARY KEY  , " +
-            "name VARCHAR, formattedAddress VARCHAR, description VARCHAR, image varchar)";
+            "name VARCHAR, formattedAddress VARCHAR, description VARCHAR, image varchar,contact VARCHAR, email VARCHAR)";
 
 
 
@@ -51,6 +51,8 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
         contentValues.put("name", business.name);
         contentValues.put("formattedAddress", business.location.formattedAddress);
         contentValues.put("description", business.description);
+        contentValues.put("contact", business.contact);
+        contentValues.put("email", business.email);
         System.out.println(business.description);
 //        contentValues.put("image", business.photos);
 
@@ -80,6 +82,8 @@ public class BusinessBookMarkDBHelper extends SQLiteOpenHelper {
                 business.name = cursor.getString(1);
                 business.location.formattedAddress = cursor.getString(2);
                 business.description = cursor.getString(3);
+                business.contact = cursor.getString(4);
+                business.email = cursor.getString(5);
 
 
 

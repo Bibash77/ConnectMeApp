@@ -26,7 +26,7 @@ public class Business {
     public Location location;
     public String category;
     public Float rating;
-    public List<Review> reviews;
+//    public List<Review> reviews;
     public List<String> photos;
 
     public String distance;

@@ -43,8 +43,13 @@ public class SearchHistoryDBHelper extends SQLiteOpenHelper {
         cursor.close();
 
         // Concatenate the new search query with the existing search history
-        String newSearchHistory = currentSearchHistory + ", " + query;
+        String newSearchHistory = null;
 
+        if(currentSearchHistory == null){
+            newSearchHistory = query;
+        } else {
+            newSearchHistory =  query+ ", " + currentSearchHistory;
+        }
         // Limit the length of the search history string (adjust the limit as needed)
         int maxLength = 255; // For example, limit to 255 characters
         if (newSearchHistory.length() > maxLength) {
